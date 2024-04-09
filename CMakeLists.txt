@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(ads VERSION 1.0)
 
-
 # configure googletest
 include(FetchContent)
 FetchContent_Declare(
@@ -20,7 +19,11 @@ add_executable(avl_test ${CMAKE_CURRENT_SOURCE_DIR}/tests/avl_tests.cc)
 target_include_directories(avl_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(avl_test GTest::gtest_main)
 
+add_executable(ring-buffer_test ${CMAKE_CURRENT_SOURCE_DIR}/tests/ring-buffer_tests.cc)
+target_include_directories(ring-buffer_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(ring-buffer_test GTest::gtest_main)
+
 # ctest configuration
 include(GoogleTest)
 gtest_discover_tests(avl_test)
-
+gtest_discover_tests(ring-buffer_test)
