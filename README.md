@@ -11,3 +11,17 @@ efficient search, at cost of rigid balancing requirements
  consultation, fixing the over-head cost during insertion.
  ** Better operational time estimation.
  ** Better performance over persistent data. (write once, read many)
+
+--- 
+## Ring Buffer
+
+Also known as a circular buffer or cyclic buffer, 
+is a fixed-size buffer with a wrap-around mechanism.
+
+### Why it matters?
+ ** Efficient use of memory, constant time complexity, no overhead
+ with memory allocations.
+ ** Usefull in produce/consume scenarios with different rate
+ operations.
+ ** Data streaming, audio, serial communication, network packet
+ processing.

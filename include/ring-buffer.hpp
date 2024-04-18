@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2024 R Carvalho
  *
- * This file is a circular buffer implementation,
+ * This file is a circular _buffer implementation,
  * which is distributed under the terms of the MIT License.
  *
  */
@@ -14,40 +14,43 @@
 
 #include <optional>
 
+namespace ads{
+
 template <typename T, size_t N>
 class RingBuffer
 {
 private:
-  T buffer[N];
-  uint head, tail;
+  T _buffer[N];
+  uint _head, _tail;
 
-  inline uint next(const uint &index) const noexcept
+  inline uint _next(const uint &index) const noexcept
   {
     return (index + 1) % N;
   }
 public:
   bool is_empty, is_full;
-  RingBuffer() : head(0),
-                 tail(0),
+  RingBuffer() : _buffer(),
+                 _head(0),
+                 _tail(0),
                  is_empty(true),
                  is_full(false){};
 
   inline uint size(void) const noexcept
   {
-    if (head == tail)
+    if (_head == _tail)
       return 0;
-    if (tail > head)
-      return tail - head;
+    if (_tail > _head)
+      return _tail - _head;
     else
-      return N - (head - tail);
+      return N - (_head - _tail);
   }
 
   void write(const T &elem) noexcept
   {
-    buffer[tail] = elem;
-    tail = next(tail);
+    _buffer[_tail] = elem;
+    _tail = _next(_tail);
 
-    if (head == tail)
+    if (_head == _tail)
       is_full = true;
     is_empty = false;
   }
@@ -57,13 +60,15 @@ public:
     if (is_empty)
       return std::nullopt;
 
-    auto ret_value = std::optional<T>(buffer[head]);
-    head = next(head);
+    auto ret_value = std::optional<T>(_buffer[_head]);
+    _head = _next(_head);
 
     is_full = false;
 
-    if (head == tail) is_empty = true;
+    if (_head == _tail) is_empty = true;
     
     return ret_value;
   }
 };
+
+} //namespace ads

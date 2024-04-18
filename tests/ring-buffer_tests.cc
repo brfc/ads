@@ -3,6 +3,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace ads;
 
 TEST(RING_BUFFER_TESTS, test_empty)
 {
