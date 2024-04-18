@@ -16,12 +16,13 @@
 
 #include <memory>
 
-using namespace std;
+namespace ads
+{
 
 template <typename T>
 struct Node
 {
-    typedef unique_ptr<Node<T>> P_Node;
+    typedef std::unique_ptr<Node<T>> P_Node;
 
     T _data;
     int _balance;
@@ -40,7 +41,7 @@ template <typename T>
 class Tree
 {
 private:
-    typedef unique_ptr<Node<T>> P_Node;
+    typedef std::unique_ptr<Node<T>> P_Node;
 
     P_Node root;
 
@@ -53,9 +54,9 @@ private:
 
     P_Node _left_rotation(P_Node &root) const noexcept
     {
-        P_Node right = move(root->_right);
-        root->_right = move(right->_left);
-        right->_left = move(root);
+        P_Node right = std::move(root->_right);
+        root->_right = std::move(right->_left);
+        right->_left = std::move(root);
 
         right->_left->_balance =
             _get_balance(right->_left->_right) - _get_balance(right->_left->_left);
@@ -67,9 +68,9 @@ private:
 
     P_Node _right_rotation(P_Node &root) const noexcept
     {
-        P_Node left = move(root->_left);
-        root->_left = move(left->_right);
-        left->_right = move(root);
+        P_Node left = std::move(root->_left);
+        root->_left = std::move(left->_right);
+        left->_right = std::move(root);
 
         left->_right->_balance =
             _get_balance(left->_right->_right) - _get_balance(left->_right->_left);
@@ -108,15 +109,15 @@ private:
                 return _rightleft(tree);
         }
 
-        return move(tree);
+        return std::move(tree);
     };
 
     P_Node _insert(P_Node &root, const T &data) noexcept
     {
         if (!root)
         {
-            root = make_unique<Node<T>>(data);
-            return move(root);
+            root = std::make_unique<Node<T>>(data);
+            return std::move(root);
         }
 
         if (data > root->_data)
@@ -132,7 +133,7 @@ private:
 
         root = _balance(root);
 
-        return move(root);
+        return std::move(root);
     }
 
     bool _exist(const P_Node &node, const T &data) const noexcept
@@ -154,7 +155,7 @@ private:
         if (nullptr == tree)
             return 0;
 
-        return 1 + max(_height(tree->_left), _height(tree->_right));
+        return 1 + std::max(_height(tree->_left), _height(tree->_right));
     }
 
     int _size(const P_Node &tree) const noexcept
@@ -169,12 +170,16 @@ public:
     template <typename U>
     friend bool operator==(const Tree<U> &lhs, const Tree<U> &rhs);
 
-    Tree() = default;
+    Tree() : 
+        root(nullptr) 
+    {};
 
     template <typename U, typename... Ts>
-    Tree(T f_arg, U s_arg, Ts... args)
+    Tree(T f_arg, U s_arg, Ts... args) : 
+        root(nullptr)
     {
-        static_assert(is_same<T, U>::value, "[Error] Tree values need to have the same type.");
+        static_assert(std::is_same<T, U>::value, 
+            "[Error] Tree values need to have the same type.");
         insert(f_arg);
         insert(s_arg);
         (insert(args), ...);
@@ -231,3 +236,5 @@ bool operator==(const Tree<U> &lhs, const Tree<U> &rhs)
         return lhs.root == rhs.root;
     return *lhs.root == *rhs.root;
 };
+
+} // namespace ads

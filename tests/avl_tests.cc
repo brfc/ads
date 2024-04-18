@@ -2,6 +2,9 @@
 #include <cmath>
 #include <avl.hpp>
 
+using namespace std;
+using namespace ads;
+
 class AVL : public ::testing::Test
 {
 protected:
