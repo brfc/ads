@@ -52,4 +52,14 @@ over a specified range of indices.
 #### Why it matters?
  * Range Query Operations, Dynamic Updates, Parallelism (due to independent segmentation).
  * Performance (Cache efficiency due to linear structure implementation).
- * Efficient Update and Querying at space overhead cost. 
+ * Efficient Update and Querying at space overhead cost.
+
+---
+
+# Coverage
+To get coverage data, install lcov beforehand. Then, generate project with DENABLE_COVERAGE.
+> cmake -DENABLE_COVERAGE=true ..
+
+> make
+
+> ctest && make coverage 
