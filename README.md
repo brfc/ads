@@ -38,3 +38,18 @@ that is used to store a dynamic set of strings where the keys are usually string
  **Dictionary and Spell checking, Autocomplete and predictive text,
  IP Routing, Lexicographic sorting, IP Routing lookup, Network Packet
  Routing.
+
+---
+## Segment Tree
+
+A segment tree is a tree-like data structure used for storing information 
+about intervals or segments of an array. 
+Each node of the tree represents a segment of the array.
+Enables efficient querying of various operations over segments of an array,
+such as finding the minimum, maximum, sum, or any other associative operation
+over a specified range of indices.
+
+## Why it matters?
+ **Range Query Operations, Dynamic Updates, Parallelism (due to independent segmentation).
+ **Performance (Cache efficiency due to linear structure implementation).
+ **Efficient Update and Querying at space overhead cost. 

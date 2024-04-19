@@ -23,7 +23,17 @@ add_executable(ring-buffer_test ${CMAKE_CURRENT_SOURCE_DIR}/tests/ring-buffer_te
 target_include_directories(ring-buffer_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(ring-buffer_test GTest::gtest_main)
 
+add_executable(trie_test ${CMAKE_CURRENT_SOURCE_DIR}/tests/trie_tests.cc)
+target_include_directories(trie_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(trie_test GTest::gtest_main)
+
+add_executable(segment-tree_test ${CMAKE_CURRENT_SOURCE_DIR}/tests/segment-tree_tests.cc)
+target_include_directories(segment-tree_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(segment-tree_test GTest::gtest_main)
+
 # ctest configuration
 include(GoogleTest)
 gtest_discover_tests(avl_test)
 gtest_discover_tests(ring-buffer_test)
+gtest_discover_tests(trie_test)
+gtest_discover_tests(segment-tree_test)
