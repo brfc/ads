@@ -13,6 +13,7 @@
 #pragma once
 
 #include <optional>
+#include <mutex>
 
 namespace ads{
 
@@ -20,6 +21,7 @@ template <typename T, size_t N>
 class RingBuffer
 {
 private:
+  std::mutex _mtx;
   T _buffer[N];
   uint _head, _tail;
 
@@ -29,7 +31,8 @@ private:
   }
 public:
   bool is_empty, is_full;
-  RingBuffer() : _buffer(),
+  RingBuffer() : _mtx(),
+                 _buffer(),
                  _head(0),
                  _tail(0),
                  is_empty(true),
@@ -47,6 +50,7 @@ public:
 
   void write(const T &elem) noexcept
   {
+    std::lock_guard<std::mutex> lock(_mtx);
     _buffer[_tail] = elem;
     _tail = _next(_tail);
 
@@ -57,6 +61,7 @@ public:
 
   std::optional<T> read(void) noexcept
   {
+    std::lock_guard<std::mutex> lock(_mtx);
     if (is_empty)
       return std::nullopt;
 

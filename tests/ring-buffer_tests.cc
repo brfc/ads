@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <ring-buffer.hpp>
 #include <iostream>
+#include <thread>
 
 using namespace std;
 using namespace ads;
@@ -64,4 +65,26 @@ TEST(RING_BUFFER_TESTS, test_read_after_write)
 
   ASSERT_EQ(v1.value(), 1);
   ASSERT_EQ(v2.value(), 2);
+};
+
+TEST(RING_BUFFER_TESTS, test_consumer_producer)
+{
+  RingBuffer<int, 100> buffer;
+  
+  const int num_p = 90;
+  const int num_c = 10;
+
+  std::thread producers[num_p];
+  
+  auto produce = [](RingBuffer<int, 100>& buffer){
+    buffer.write(20);
+  };
+
+  for(int i = 0 ; i<num_p ; i++)
+    producers[i] = std::thread(produce, std::ref(buffer));
+
+  for(int i = 0 ; i<num_p ; i++)
+    producers[i].join(); 
+
+  ASSERT_EQ(buffer.size() , num_p); 
 };
