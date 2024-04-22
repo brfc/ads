@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include <avl.hpp>
+#include <thread>
+
 
 using namespace std;
 using namespace ads;
@@ -13,7 +15,7 @@ protected:
 
 public:
     template <typename T>
-    bool balanced(const Tree<T> &t)
+    bool balanced(Tree<T> &t)
     {
         auto size = t.size();
         auto height = t.height();
@@ -109,4 +111,21 @@ TEST_F(AVL, EQUALITY_FAULT)
     Tree<int> tree5;
 
     ASSERT_FALSE(tree4 == tree5);
+}
+
+TEST_F(AVL, CONCURRENCY_INSERT)
+{
+  Tree<int> tree{213,23143,565,767,842,1,23234,5431,-1239};
+  const int initial_size = tree.size();
+
+  // start 1000 threads * insert op
+  const int num_threads = 1000;
+  std::thread t[num_threads];
+  for(int i = 0 ; i < num_threads ; i++)
+    t[i] = std::thread(&Tree<int>::insert, &tree, 2);
+    
+  for(int i = 0 ; i < num_threads ; i++)
+    t[i].join();
+
+  ASSERT_EQ(tree.size() , initial_size + num_threads);
 }

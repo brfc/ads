@@ -15,6 +15,7 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 namespace ads
 {
@@ -42,6 +43,8 @@ class Tree
 {
 private:
     typedef std::unique_ptr<Node<T>> P_Node;
+
+    std::mutex _mtx;
 
     P_Node root;
 
@@ -132,7 +135,6 @@ private:
         }
 
         root = _balance(root);
-
         return std::move(root);
     }
 
@@ -171,7 +173,8 @@ public:
     friend bool operator==(const Tree<U> &lhs, const Tree<U> &rhs);
 
     Tree() : 
-        root(nullptr) 
+        root(nullptr),
+        _mtx()
     {};
 
     template <typename U, typename... Ts>
@@ -185,23 +188,27 @@ public:
         (insert(args), ...);
     }
 
-    int size() const noexcept
+    int size() noexcept
     {
+        std::lock_guard<std::mutex> lock(_mtx);
         return _size(root);
     }
 
-    int height() const noexcept
+    int height() noexcept
     {
+        std::lock_guard<std::mutex> lock(_mtx);
         return _height(root);
     }
 
-    bool exist(const T &d) const noexcept
+    bool exist(const T &d) noexcept
     {
+        std::lock_guard<std::mutex> lock(_mtx);
         return _exist(root, d);
     }
 
     void insert(const T d) noexcept
     {
+        std::lock_guard<std::mutex> lock(_mtx);
         root = _insert(root, d);
     }
 };
