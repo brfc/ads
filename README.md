@@ -1,4 +1,4 @@
-## avl
+## avl (thread-safe)
 
 self-balancing binary search tree
 efficient search, at cost of rigid balancing requirements
@@ -13,7 +13,7 @@ efficient search, at cost of rigid balancing requirements
  * Better performance over persistent data. (write once, read many)
 
 --- 
-## Ring Buffer
+## Ring Buffer (thread-safe)
 
 Also known as a circular buffer or cyclic buffer, 
 is a fixed-size buffer with a wrap-around mechanism.
